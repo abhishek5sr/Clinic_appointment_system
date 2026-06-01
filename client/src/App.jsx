@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import './App.css';
 const api = axios.create({ baseURL: 'http://localhost:3000' });
 
 function App() {
@@ -35,8 +35,15 @@ function App() {
       <header className="app-header">
         <h1>Medical Clinic</h1>
       </header>
-      <main className="section">
-        <div className="form-grid">
+      <div className="Main-Container">
+       <div className="info-panel">
+          <p>Welcome to Medical Clinic Booking System. Use this portal to find available appointment slots. Click on a time to book.</p>
+        </div>
+
+        {/* Slot Selector */}
+        <div className="slot-selector">
+          <h3>Select an Available Time</h3>
+          <div className="slots-grid">
           {slots.map(slot => (
             <button 
               key={slot._id} 
@@ -48,15 +55,17 @@ function App() {
             </button>
           ))}
         </div>
-      </main>
-      {formData.slotId && (
-        <form className="section" onSubmit={handleSubmit}>
+        </div>
+     
+      <form className="booking-form" onSubmit={handleSubmit}>
+          <h3>Complete Your Booking</h3>
           <input placeholder="Patient Name" required onChange={e => setFormData({...formData, name: e.target.value})} />
-          <textarea placeholder="Appointment Reason" required onChange={e => setFormData({...formData, reason: e.target.value})} />
-          <button className="primary" type="submit">Confirm</button>
+          <textarea placeholder="Appointment Reason" required onChange={e => setFormData({...formData, reason: e.target.value})}></textarea>
+          <p>Slot Selected: {formData.slotId ? slots.find(s => s._id === formData.slotId)?.time : "None"}</p>
+          <button className="primary" type="submit">Confirm Appointment</button>
         </form>
-      )}
     </div>
+     </div>
   );
 }
 export default App;
